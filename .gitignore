@@ -1,0 +1,14 @@
+# Python virtual environment and cache files
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Test output (reports, screenshots, traces) - generated on every run
+test-results/
+reports/
+
+# Secrets and editor settings
+.env
+.vscode/
+.idea/
