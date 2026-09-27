@@ -2,20 +2,8 @@ import re
 
 from playwright.sync_api import expect
 
+from data.nav_data import EXPECTED_NAV_ITEMS, NAV_LINKS
 from pages.home_page import HomePage
-
-# Test data: the menu items we expect, in the same order as on the website
-EXPECTED_NAV_ITEMS = ["Explore", "Features", "OTC Desk", "Company", "Support", "Blog", "$MBG"]
-
-# Test data: menu item -> text the page URL should contain after clicking it
-NAV_LINKS = {
-    "Explore": "/explore",
-    "Features": "/features",
-    "OTC Desk": "/otc-desk",
-    "Company": "/company",
-    "Support": "/support",
-    "Blog": "/blog",
-}
 
 
 def test_all_nav_items_are_visible(page):
