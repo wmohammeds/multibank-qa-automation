@@ -70,18 +70,20 @@ def test_risk_warning_and_licence_on_every_key_page(page):
 
     for path in REGULATED_PAGES:
         home.goto(path)
+        """TC-EDGE-05: Risk warning and the regulator's licence number are shown on every key page."""
         expect(home.get_risk_warning()).to_be_visible()
-        expect(home.get_vara_licence()).to_be_visible()
+        expect(home.get_regulator_licence()).to_be_visible()
 
 
 def test_arabic_version_reads_right_to_left(browser):
     """TC-EDGE-06: An Arabic browser gets the Arabic site, shown right to left."""
+        # The address is /ar-AE in the UAE and /ar elsewhere, so only check it starts with /ar
     arabic_browser = browser.new_context(locale="ar-AE", base_url="https://mb.io")
     page = arabic_browser.new_page()
     home = HomePage(page)
     home.open()
 
-    expect(page).to_have_url(re.compile("/ar-"))
+    expect(page).to_have_url(re.compile("/ar"))
     assert home.text_direction() == "rtl"
     expect(home.get_nav_items()).to_have_count(len(EXPECTED_NAV_ITEMS))
 

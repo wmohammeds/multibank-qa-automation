@@ -107,3 +107,22 @@ The description doesn't contain numbers that go out of date, or they are updated
 
 **Impact**
 Conflicting prices on the same page confuse customers and reduce trust.
+
+
+| BUG-005 | 404 page shows the Australian company's footer to UAE visitors | Medium | Open | Manual check |
+---
+
+## BUG-005 – 404 page shows the Australian company's footer to UAE visitors
+
+**Severity:** Medium | **Environment:** https://mb.io/en-AE/this-page-does-not-exist (visited from the UAE)
+
+**Summary**
+Every normal page shown to a UAE visitor names the UAE company, **MBIO FZE**, with its **VARA** licence (VL/24/06/001) and the full set of UAE legal links. The "Page not found" page instead shows the **Australian** company, MB.IO Pty Ltd (AFSL 416279), and only 5 legal links, even though the address is `/en-AE/...`.
+
+**Expected result**
+The 404 page shows the same regulated company, licence and legal links as the rest of the UAE site.
+
+**Impact**
+A regulated firm should show customers the correct licensed company and disclosures on every page. Showing another country's company can confuse customers and is a compliance risk.
+
+**Evidence:** `docs/evidence/BUG-005-404-footer.png`
