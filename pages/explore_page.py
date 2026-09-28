@@ -45,4 +45,18 @@ class ExplorePage(BasePage):
     def pair_changes(self):
         """Return the 24h change of every pair, e.g. ['0.33%']."""
         return self.page.locator(self.PAIR_CHANGES).all_inner_texts()
+
+    def get_pair_link(self, symbol):
+        """Return the link of one trading pair, e.g. 'BTC'."""
+        return self.page.locator(f"{self.PAIR_ROWS} a[href='/explore/{symbol}']")
+
+    def click_pair(self, symbol):
+        """Click a trading pair to open its coin page."""
+        self.get_pair_link(symbol).click()
+
+    def pair_price(self, symbol):
+        """Return the price of one pair as a number, e.g. '$84,452.45' -> 84452.45."""
+        price_cell = self.page.locator(f"{self.PAIR_ROWS}:has(a[href='/explore/{symbol}']) td[id$='_price-td']")
+        price_text = price_cell.inner_text()
+        return float(price_text.replace("$", "").replace(",", ""))
         
