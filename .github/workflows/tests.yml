@@ -1,0 +1,42 @@
+# Runs the whole test suite in 3 browsers on every push and pull request.
+name: UI tests
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:   # adds a "Run workflow" button on GitHub
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false   # one browser failing does not stop the others
+      matrix:
+        browser: [chromium, firefox, webkit]
+
+    steps:
+      - name: Get the code
+        uses: actions/checkout@v4
+
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install packages
+        run: pip install -r requirements.txt
+
+      - name: Install the browser
+        run: playwright install --with-deps ${{ matrix.browser }}
+
+      - name: Run tests
+        run: pytest --browser ${{ matrix.browser }} --html=reports/report-${{ matrix.browser }}.html
+
+      - name: Save report, screenshots and traces
+        if: always()   # upload even when tests fail - that's when we need the evidence most
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report-${{ matrix.browser }}
+          path: |
+            reports/
+            test-results/

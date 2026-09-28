@@ -26,7 +26,9 @@ def test_nav_items_open_correct_pages(page):
     for name, url_part in NAV_LINKS.items():
         home.open()
         home.click_nav_item(name)
-        expect(page).to_have_url(re.compile(url_part))
+        # The site only changes the URL after the next page's data has arrived,
+        # which can take a long time when the site is busy - so allow up to 30 seconds
+        expect(page).to_have_url(re.compile(url_part), timeout=30_000)
 
 
 def test_mbg_link_points_to_token_site(page):
