@@ -2,7 +2,7 @@
 
 **Scenario:** I've just joined a fintech startup as a QA Engineer. There's a mobile trading app (iOS and Android) two weeks from its first public release, with no test suite, no QA documentation, and a team that has been shipping fast. Real customer money is involved.
 
-These answers come from my six years in manual testing and from what I learned building the automation suite in this repository.
+These answers come from my Quality Engineering and from what I learned building the automation suite in this repository.
 
 Supporting documents: [Test Plan](TEST_PLAN.md) · [Risk Matrix](RISK_MATRIX.md) · [Release Readiness Checklist](RELEASE_CHECKLIST.md)
 
