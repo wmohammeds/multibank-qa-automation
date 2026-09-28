@@ -1,97 +1,89 @@
 # Task 2 – QA Strategy & Thinking
 
-**Scenario:** I have just joined a fintech startup as a QA Engineer. There is a mobile trading app (iOS and Android), two weeks from its first public release. There is no test suite, no QA documentation, and the team has been shipping fast. Real user funds are involved.
+**Scenario:** I've just joined a fintech startup as a QA Engineer. There's a mobile trading app (iOS and Android) two weeks from its first public release, with no test suite, no QA documentation, and a team that has been shipping fast. Real customer money is involved.
 
-Related documents: [Test Plan](TEST_PLAN.md) · [Risk Matrix](RISK_MATRIX.md) · [Release Readiness Checklist](RELEASE_CHECKLIST.md)
+These answers come from my six years in manual testing and from what I learned building the automation suite in this repository.
+
+Supporting documents: [Test Plan](TEST_PLAN.md) · [Risk Matrix](RISK_MATRIX.md) · [Release Readiness Checklist](RELEASE_CHECKLIST.md)
 
 ---
 
 ## 1. Where do you start?
 
-With two weeks and real money involved, I can't test everything, so I start by **understanding the product and the risks**, not by writing automation.
+I wouldn't start by writing automation. With only two weeks and real money involved, the first job is to understand the product and find the biggest risks quickly.
 
-**Days 1–2: learn and map**
-- Talk to the product owner, the developers and support: what does the app do, what changed recently, what are they worried about?
-- Use the app myself, like a new customer: sign up, verify identity, deposit, buy, sell, withdraw. I note everything confusing or broken. That exploratory session is my first bug list.
-- List the **critical user journeys**, the ones that touch money or trust:
-  1. Sign up, login, 2FA and identity verification (KYC)
-  2. Deposit funds (card, bank transfer)
-  3. Place a buy / sell order and see the correct balance afterwards
-  4. Withdraw funds
-  5. Prices and portfolio values shown correctly
-- Check what already exists: unit tests, a staging environment, test accounts, crash reporting, logs.
+**First two days: learn the app and talk to people**
+- I'd use the app myself exactly like a new customer would: sign up, verify my identity, add money, buy, sell and withdraw. I'd write down everything that breaks or confuses me. In my experience, this first hands-on session always finds real bugs, and it gives me the first bug list for the team.
+- I'd talk to the product owner, the developers and customer support. I'd ask: what worries you most? What changed recently? Where have bugs appeared before? Developers usually know which areas are fragile.
+- I'd find out what already exists: unit tests, a test environment, test accounts, logs and crash reporting.
 
-**Day 3: agree priorities**
-- Build a simple [risk matrix](RISK_MATRIX.md): likelihood × impact for each area.
-- Agree with the team and product owner **what "ready to release" means** (the [release checklist](RELEASE_CHECKLIST.md)): for example, "no open critical or high bugs in money flows".
-
-Starting this way means that in the first days I'm already finding the bugs that matter most, and everyone agrees on the goal.
+**Day three: agree what matters most**
+- I'd list the journeys where money moves or trust is at stake: login and 2FA, deposit, buy and sell, balances, withdrawal and prices.
+- I'd put them in a simple [risk matrix](RISK_MATRIX.md) (how likely to fail × how bad if it fails) and agree priorities with the team.
+- Most importantly, I'd agree with the product owner **what "ready to release" means** before the last week, not during it. For example: "no open critical bugs in any money flow". That's the [release checklist](RELEASE_CHECKLIST.md).
 
 ---
 
 ## 2. How would you approach testing this app?
 
-**Risk-based**: the most testing time goes to what can lose customers money or break trust.
+I'd use a **risk-based** approach: most of my time goes to the areas that can lose customers' money or their trust.
 
-| Priority | Area | How I test it |
-|---|---|---|
-| P1 | Money flows: deposit, buy/sell, withdraw, balances | Manual test cases with exact expected values; check the balance on screen matches the back end; edge cases like insufficient funds, double tap on "Buy", losing network mid-order, app killed mid-transaction |
-| P1 | Security & access: login, 2FA, session timeout, KYC | Wrong passwords, expired sessions, logging in on two devices, what a logged-out user can see |
-| P1 | Price data | Prices match the source, update in time, and are labelled clearly when stale or unavailable |
-| P2 | Onboarding and navigation | Happy paths plus common mistakes |
-| P2 | Devices | A small, agreed device list: recent and older iPhones and Android phones, small and large screens, different OS versions |
-| P3 | Look and feel, content, notifications | Exploratory testing, screenshots against designs |
+**Highest priority: money and security**
+- **Deposits, buy/sell orders, balances and withdrawals.** I'd write clear test cases with exact expected values. After every trade, the balance must be exactly right. I'd also test the things real users do: tapping "Buy" twice, losing signal in the middle of an order, closing the app during a payment, or not having enough funds.
+- **Login, 2FA and sessions.** Wrong passwords, expired sessions, logging in on two phones, and what happens after logout.
+- **Prices.** The price shown must match the source and be up to date. In this project I found prices in the website's API that were hours or even days old (BUG-002), so I know this can really happen.
 
-**Types of testing**
-- **Exploratory testing** every day on new builds. With no documentation it finds the most bugs fastest.
-- **Structured test cases** for the critical journeys, so they are repeatable and anyone can run them.
-- **API testing** of the back end (for example with Postman or Python): money logic is best checked below the UI, where it's faster and more precise.
-- **Automation**, started small: a smoke suite of the critical journeys on the API and web, then mobile UI later. In two weeks, I wouldn't try to automate everything.
-- **Non-functional basics**: slow or no network, app in the background, low battery, app updates over an older version.
+**Next: everything customers use every day**
+Onboarding, navigation, portfolio screens and notifications, tested on a small agreed list of real iPhones and Android phones, including older models and small screens.
 
-**Environments**: test on staging with test money first, and do a small, controlled check in production at release (for example a tiny real deposit and withdrawal with an internal account).
+**How I'd test**
+- **Exploratory testing** every day on new builds. With no documentation, it's the fastest way to find important bugs.
+- **Written test cases** for the critical journeys, so they're repeatable and anyone in the team can run them.
+- **API testing** for the money logic. Checking the back end directly is faster and more precise than going through the screens.
+- **A small automated smoke suite** for the critical journeys, like the one in this repository, running on every build. I wouldn't try to automate everything in two weeks.
+- **Real-world conditions:** slow or no network, phone calls interrupting the app, the app in the background, and updating from an older version.
+
+Every bug gets clear steps, expected and actual results, the device and OS, and evidence (a screenshot or video), so developers can fix it quickly.
 
 ---
 
 ## 3. What does QA look like inside a sprint, from ticket creation through to regression?
 
-QA is involved at **every** step, not only at the end.
+QA should be involved from the start of every ticket, not only at the end. Finding a problem in a ticket description is much cheaper than finding it in the app.
 
-1. **Ticket creation / refinement**: I review the story before it's started and ask "how will we know it works?" I help write clear **acceptance criteria**, including negative cases ("what if the payment fails?").
-2. **Sprint planning**: testing effort is part of the estimate. A story isn't done until it's tested.
-3. **During development**: I write test cases or charters in parallel with the developer, and prepare test data and accounts. Developers write unit tests; I review what they cover.
-4. **Testing the story**: when a build is ready, I test against the acceptance criteria and explore around it. Bugs are logged with steps, expected vs actual, severity, device/OS and evidence (screenshot or video).
-5. **Bug fix and retest**: fixes are retested, and I check nearby features for side effects.
-6. **Automation**: stable, important checks from the story are added to the automated suite, so the regression suite grows every sprint.
-7. **Regression**: before release, the automated suite runs on every build (CI), plus a focused manual regression of the critical journeys on real devices.
-8. **Sprint review / retro**: I share quality information (bugs found, where they came from, escaped bugs) so the team can improve.
+1. **Ticket creation and refinement.** I read the story before development starts and ask "how will we know this works?" I help write clear acceptance criteria, including the unhappy paths, for example "what happens if the payment fails?"
+2. **Sprint planning.** Testing time is part of the estimate. A story isn't done until it has been tested.
+3. **During development.** While the developer builds the feature, I prepare my test cases and test data. I also check which unit tests the developer is adding.
+4. **Testing the story.** When the build is ready, I test against the acceptance criteria and then explore around the feature to find what wasn't thought of.
+5. **Bugs and retesting.** I log bugs with clear evidence, retest fixes, and check nearby features for side effects.
+6. **Automation.** The important, stable checks from the story are added to the automated suite, so the regression suite grows a little every sprint.
+7. **Regression.** Before release, the automated suite runs in CI on every build, and I do a focused manual regression of the critical journeys on real devices.
+8. **Sprint review and retro.** I share what we learned about quality, like where bugs came from and which ones escaped, so the whole team can improve.
 
 ---
 
 ## 4. What does your ideal regression suite look like?
 
-- **Layered, like a pyramid**: many fast unit tests (developers), a good set of API tests for business rules and money logic, and a **small** number of end-to-end UI tests for the critical journeys only.
-- **Risk-based and focused**: every test is there for a reason. The money flows, login and prices are always covered. It's better to have 50 reliable tests than 500 flaky ones.
-- **Tiered**:
-  - **Smoke** (minutes): runs on every build. Can users log in, see prices, and open buy/sell?
-  - **Full regression** (under an hour): runs nightly and before every release.
-- **Automated in CI**, with clear reports and evidence (screenshots, logs) on failure, and results that the whole team looks at.
-- **Reliable**: no fixed sleeps, independent tests, stable test data, and flaky tests are fixed or removed quickly, because a suite nobody trusts is useless.
-- **Traceable**: each test links to a requirement or risk, so we know what a failure means for customers.
-- **Maintained**: reviewed every sprint. New features add tests; removed features remove them.
-- **Plus a short manual checklist** on real devices for things automation can't judge well (look and feel, real payment cards, app store install).
-
-This project follows the same ideas on a small scale: page objects, separate test data, known bugs tracked with `xfail`, reports with screenshots, three browsers and CI.
+- **Focused on risk, not size.** Every test is there for a reason. Money flows, login and prices are always covered. I'd rather have 50 reliable tests than 500 that nobody trusts. In this project I kept to 24 tests that cover every requirement.
+- **Layered.** Many fast unit tests (written by developers), a good set of API tests for business rules and money logic, and only a small number of end-to-end UI tests for the most important journeys.
+- **Two levels:**
+  - a **smoke suite** that runs in minutes on every build ("can users log in, see prices and place an order?")
+  - a **full regression** that runs every night and before every release.
+- **Automated in CI**, with a clear report and evidence (screenshots, logs) for every failure, so anyone in the team can see what went wrong.
+- **Stable.** No fixed waits, tests that don't depend on each other, and good test data. When a test is flaky, I find the real cause and fix it quickly. While building this project I found flaky results caused by slow loading, a network problem and regional differences, and I fixed the cause each time instead of just re-running.
+- **Honest about known bugs.** Known bugs stay visible in the report, the way I use `xfail` in this project, instead of being deleted or hidden.
+- **Traceable and maintained.** Each test links to a requirement or risk, and the suite is reviewed every sprint: new features add tests, and removed features remove them.
+- **Plus a short manual checklist** on real devices for what automation can't judge well, like how the app looks and feels, real payment cards, and installing from the app store.
 
 ---
 
-## 5. What would keep you up at night about this app and releasing to the public?
+## 5. What would keep you up at night about this app and releasing it to the public?
 
-1. **Money being wrong.** A balance that doesn't update, a double charge from tapping "Buy" twice, an order placed at a different price than shown, or a withdrawal that leaves the account but never arrives. With real funds, one such bug can lose customers and trigger regulatory action.
-2. **Wrong or stale prices.** On the website I found prices in the API that were hours or days old (BUG-002). In a trading app, customers act on the number they see.
-3. **Security and account takeover.** Weak session handling, 2FA that can be skipped, or personal/KYC data exposed.
-4. **No time to recover.** No test suite and fast shipping mean we don't know what's already broken. A mobile release can't be rolled back instantly: users must update from the app store, and review takes time. So I'd want **feature flags** or a server-side "kill switch" for risky features, and crash monitoring from day one.
-5. **Real-world conditions.** Poor mobile network, the app killed during a transaction, old phones, and many users at once on launch day.
-6. **Regulation.** Missing risk warnings, disclosures or complaint routes in the app (the website shows these on every page; the app must too).
+1. **Money being wrong.** A balance that doesn't update, a double charge after tapping twice, an order filled at a different price than shown, or a withdrawal that leaves the account but never arrives. With real money, one of these bugs can lose customers' trust and cause problems with the regulator.
+2. **Wrong or old prices.** Customers make decisions on the number they see. I've already seen stale prices in this company's website data, so I'd check this carefully in the app too.
+3. **Security.** Someone getting into another person's account, 2FA that can be skipped, or personal and identity documents being exposed.
+4. **No safety net.** With no test suite and fast shipping, nobody knows what's already broken. A mobile app also can't be rolled back instantly: users have to update from the app store, and store review takes time. I'd want a way to switch off risky features from the server, crash monitoring from day one, and a staged rollout to a small group of users first.
+5. **Real life is messier than testing.** Weak mobile signal, old phones, the app being closed in the middle of a payment, and many users at once on launch day.
+6. **Regulation.** Risk warnings, terms and complaint information must be shown correctly for each country. On the website I found the 404 page showing another country's company details (BUG-005), so I'd check this in the app as well.
 
-**What I'd do about it**: focus the two weeks on these risks, agree clear go/no-go criteria, plan a staged rollout (for example a small percentage of users first), and make sure monitoring and a support process are in place on release day.
+**What I'd do about it:** spend the two weeks on these risks first, agree clear go / no-go criteria with the team, release gradually, and make sure monitoring, customer support and an on-call plan are ready on launch day.
