@@ -121,6 +121,7 @@ multibank-qa-automation/
 - **Marketing banner** = the home page hero section ("Crypto for everyone" with its "Download the app" and "Open an account" buttons), which must appear within the first screen.
 - **Out of scope:** sign-up, login and trading flows (not allowed by the brief), load testing and security attacks on production (no permission), and pixel-based visual comparison (not built into Playwright for Python).
 
+- **Regional content.** mb.io shows a different regulated company by visitor location: MBIO FZE with a VARA licence in the UAE, and MB.IO Pty Ltd with an Australian licence (AFSL) elsewhere, including GitHub's US servers. The compliance test checks that the risk warning and the regulator licence *for the visitor's region* are shown.
 ---
 
 ## Documents

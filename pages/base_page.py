@@ -1,8 +1,10 @@
+import re
 class BasePage:
     """Parent class for every page object. Holds the shared Playwright page."""
 
     RISK_WARNING = "Risk Warning"
-    VARA_LICENCE = "VL/24/06/001"
+        # The site shows the regulator of the visitor's region: UAE (VARA) or Australia (AFSL)
+    REGULATOR_LICENCE = re.compile("VL/24/06/001|AFSL 416279")
 
     def __init__(self, page):
         """Store the Playwright page so every method can use it."""
@@ -24,6 +26,6 @@ class BasePage:
         """Return the risk warning text in the footer."""
         return self.page.get_by_text(self.RISK_WARNING)
 
-    def get_vara_licence(self):
-        """Return the VARA licence number text in the footer."""
-        return self.page.get_by_text(self.VARA_LICENCE)
+    def get_regulator_licence(self):
+        """Return the regulator licence number in the footer (UAE or Australian)."""
+        return self.page.get_by_text(self.REGULATOR_LICENCE).first
