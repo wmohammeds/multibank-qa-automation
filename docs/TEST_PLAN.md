@@ -9,7 +9,7 @@ This document has two parts:
 ## Part A – Web UI automation suite (Task 1)
 
 ### A1. Objective
-Automatically check that the core public features of the MultiBank crypto platform work, and catch problems that would hurt customers: navigation, trading data, key content and links, compliance information, and behaviour when things go wrong.
+Automatically check that the core public features of the MultiBank crypto platform work and catch problems that would hurt customers: navigation, trading data, key content and links, compliance information and behaviour when things go wrong.
 
 ### A2. Scope
 
@@ -77,7 +77,7 @@ Test suite, HTML report with screenshots, cross-browser results, bug reports, th
 ## Part B – Mobile trading app: two-week release test plan (Task 2)
 
 ### B1. Objective
-Give the team and the business an honest picture of the app's quality and its biggest risks before the first public release, and make sure the money flows are safe.
+Give the team and the business an honest picture of the app's quality and its biggest risks before the first public release and make sure the money flows are safe.
 
 ### B2. Scope and priorities
 
@@ -90,7 +90,7 @@ Give the team and the business an honest picture of the app's quality and its bi
 | P2 | Device and OS coverage (agreed list of iOS and Android devices) |
 | P3 | Visual polish, content, minor settings |
 
-**Out of scope for the first release:** full performance testing (a basic launch-day load check only), full accessibility audit (smoke check only), and full test automation (smoke only).
+**Out of scope for the first release:** full performance testing (a basic launch-day load check only), full accessibility audit (smoke check only) and full test automation (smoke only).
 
 ### B3. Timeline
 
@@ -105,7 +105,7 @@ Give the team and the business an honest picture of the app's quality and its bi
 | 14 | Go / no-go meeting using the [Release Readiness Checklist](RELEASE_CHECKLIST.md) |
 
 ### B4. Test types
-Exploratory, structured manual test cases for money flows, API tests, automated smoke, device/OS matrix, network conditions (offline, slow, switching), interruption (calls, app killed, background), upgrade/install, and a basic security review (sessions, 2FA, data exposure).
+Exploratory, structured manual test cases for money flows, API tests, automated smoke, device/OS matrix, network conditions (offline, slow, switching), interruption (calls, app killed, background), upgrade/install and a basic security review (sessions, 2FA, data exposure).
 
 ### B5. Environments and data
 Staging with test money and test accounts; production verification with internal accounts on release day; real devices plus cloud devices if available.
@@ -123,4 +123,4 @@ Every bug gets steps, expected vs actual, severity, device/OS and evidence. Dail
 - Release checklist signed off.
 
 ### B8. Risks to the plan
-Only two weeks; no documentation; unstable builds. Mitigations: focus on P1, daily triage, early agreement on release criteria, and clear reporting so decisions are made on facts.
+Only two weeks; no documentation; unstable builds. Mitigations: focus on P1, daily triage, early agreement on release criteria and clear reporting so decisions are made on facts.

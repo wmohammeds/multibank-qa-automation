@@ -18,7 +18,7 @@ The two most important ones are covered by tests, so the suite shows at once whe
 **Environment:** Production (https://mb.io), Chromium / Firefox / WebKit, Windows 11
 
 **Summary**
-Opening a coin page directly (from Google, a bookmark or a shared link) returns a **server error (HTTP 500)**. The page the server sends has no data, and in the browser the page shows broken placeholders.
+Opening a coin page directly (from Google, a bookmark or a shared link) returns a **server error (HTTP 500)**. The page the server sends has no data and in the browser the page shows broken placeholders.
 Clicking the coin from the Explore table usually works, but about **1 time in 8** it shows the same broken state.
 
 **Steps to reproduce (direct link)**
@@ -37,7 +37,7 @@ Clicking the coin from the Explore table usually works, but about **1 time in 8*
 **Steps to reproduce (intermittent, by clicking)**
 1. Go to `https://mb.io/en-AE/explore` and wait for the table to load.
 2. Click "BTC".
-3. About 1 time in 8, the heading shows **"About Bitcoin (undefined)"** and sentiment 0.00%. It stays like this after waiting 6 seconds, and there is no page reload.
+3. About 1 time in 8, the heading shows **"About Bitcoin (undefined)"** and sentiment 0.00%. It stays like this after waiting 6 seconds and there is no page reload.
 
 **Customer and business impact**
 - Visitors arriving from search engines, bookmarks or shared links (often *new* customers) can see a broken page.
@@ -87,7 +87,7 @@ Customers could make trading decisions based on an out-of-date price.
 - **2 images** on the home page have no `alt` text.
 
 **Expected result**
-One H1 per page describing its main topic, and alt text on every meaningful image.
+One H1 per page describing its main topic and alt text on every meaningful image.
 
 **Impact**
 - Screen reader users can't jump to the main heading or understand the images (accessibility).
@@ -117,7 +117,7 @@ Conflicting prices on the same page confuse customers and reduce trust.
 **Severity:** Medium | **Environment:** https://mb.io/en-AE/this-page-does-not-exist (visited from the UAE)
 
 **Summary**
-Every normal page shown to a UAE visitor names the UAE company, **MBIO FZE**, with its **VARA** licence (VL/24/06/001) and the full set of UAE legal links. The "Page not found" page instead shows the **Australian** company, MB.IO Pty Ltd (AFSL 416279), and only 5 legal links, even though the address is `/en-AE/...`.
+Every normal page shown to a UAE visitor names the UAE company, **MBIO FZE**, with its **VARA** licence (VL/24/06/001) and the full set of UAE legal links. The "Page not found" page instead shows the **Australian** company MB.IO Pty Ltd (AFSL 416279) and only 5 legal links, even though the address is `/en-AE/...`.
 
 **Expected result**
 The 404 page shows the same regulated company, licence and legal links as the rest of the UAE site.

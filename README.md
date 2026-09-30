@@ -48,7 +48,7 @@ pytest --browser chromium --browser firefox --browser webkit
 | What | Where |
 |---|---|
 | HTML report (every run) | `reports/report.html` |
-| Screenshots of failed tests **and known bugs** | inside the HTML report, and `reports/screenshots/` |
+| Screenshots of failed tests **and known bugs** | inside the HTML report and `reports/screenshots/` |
 | Playwright traces of failed tests (step-by-step replay) | `test-results/` → open with `playwright show-trace <file>.zip` |
 | Sample cross-browser report | [`docs/test-report-cross-browser.html`](docs/test-report-cross-browser.html) (download and open in a browser) |
 | CI runs (3 browsers in parallel) | GitHub → **Actions** tab → each run has a downloadable report |
@@ -70,9 +70,9 @@ pytest --browser chromium --browser firefox --browser webkit
 The full requirement-to-test mapping is in the [Test Plan](docs/TEST_PLAN.md#a5-traceability--requirement-to-test).
 
 **Highlights**
-- **Price accuracy:** the price on screen is compared with the market data API the site uses (1% tolerance, because prices move while the test runs), and price timestamps are checked for freshness.
-- **Resilience:** the price service is made to time out (`page.route`), and the page must still load and stay usable.
-- **App download link:** requests pretending to be an iPhone and an Android phone check that each is sent to the right store, and that the store page exists.
+- **Price accuracy:** the price on screen is compared with the market data API the site uses (1% tolerance, because prices move while the test runs) and price timestamps are checked for freshness.
+- **Resilience:** the price service is made to time out (`page.route`) and the page must still load and stay usable.
+- **App download link:** requests pretending to be an iPhone and an Android phone check that each is sent to the right store and that the store page exists.
 - **Compliance:** the risk warning and VARA licence number must appear on every key page.
 - **UAE market:** an Arabic browser must get the Arabic site, displayed right to left.
 
@@ -119,9 +119,9 @@ multibank-qa-automation/
 - **About Us > Why MultiBank** is the **Company** page (`/company`), whose main heading is "Why MultiBank Group?".
 - **Region.** mb.io redirects to a language + region path (for example `/en-AE`) based on the browser language and the visitor's location. Tests use neutral URLs and check that the URL *contains* the expected path, so they work from any region. The iPhone app is listed in the **UAE** App Store only, so the test checks the UAE store page.
 - **Marketing banner** = the home page hero section ("Crypto for everyone" with its "Download the app" and "Open an account" buttons), which must appear within the first screen.
-- **Out of scope:** sign-up, login and trading flows (not allowed by the brief), load testing and security attacks on production (no permission), and pixel-based visual comparison (not built into Playwright for Python).
+- **Out of scope:** sign-up, login and trading flows (not allowed by the brief), load testing and security attacks on production (no permission) and pixel-based visual comparison (not built into Playwright for Python).
 
-- **Regional content.** mb.io shows a different regulated company by visitor location: MBIO FZE with a VARA licence in the UAE, and MB.IO Pty Ltd with an Australian licence (AFSL) elsewhere, including GitHub's US servers. The compliance test checks that the risk warning and the regulator licence *for the visitor's region* are shown.
+- **Regional content.** mb.io shows a different regulated company by visitor location: MBIO FZE with a VARA licence in the UAE and MB.IO Pty Ltd with an Australian licence (AFSL) elsewhere, including GitHub's US servers. The compliance test checks that the risk warning and the regulator licence *for the visitor's region* are shown.
 ---
 
 ## Documents
